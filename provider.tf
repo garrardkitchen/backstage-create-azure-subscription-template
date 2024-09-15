@@ -8,9 +8,9 @@ terraform {
  
   backend "remote" {
     hostname = "app.terraform.io"
-    organization = "${{ value.organization }}"
+    organization = "${{ values.organization }}"
     workspaces {
-      name = "${{ value.workspace }}"
+      name = "${{ values.workspace }}"
     }    
   }
 }
