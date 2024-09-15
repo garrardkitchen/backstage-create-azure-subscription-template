@@ -1,7 +1,7 @@
 name: 'Terraform Apply'
 
 
-$ {{ values.trigger }}
+${{ values.trigger }}
   workflow_dispatch: 
 
 jobs:
