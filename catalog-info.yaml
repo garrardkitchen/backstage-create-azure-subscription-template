@@ -11,11 +11,10 @@ metadata:
     tags:
     - azure
     - resource  
-    - subscription
     - terraform
-    - iac
     - cd
 spec:
   type: resource
   owner: group:platform-team
   lifecycle: development
+  system: azure
