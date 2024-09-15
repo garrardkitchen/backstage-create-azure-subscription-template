@@ -8,11 +8,11 @@ metadata:
     techdocs.io/website: https://${{ values.owner }}.github.io/${{ values.repo }}
     backstage.io/techdocs-ref: dir:.
     github.com/team-slug: backstage/platform engineering
-    tags:
-    - azure
-    - resource  
-    - terraform
-    - cd
+  tags:
+  - azure
+  - resource  
+  - terraform
+  - cd
 spec:
   type: resource
   owner: group:platform-team
