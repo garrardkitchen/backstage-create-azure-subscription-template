@@ -2,6 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${{ values.name | dump }}
+  description: Create a Subscription in Azure
   annotations:
     github.com/project-slug: ${{ values.owner }}/${{ values.repo }}
     techdocs.io/website: https://${{ values.owner }}.github.io/${{ values.repo }}
@@ -11,3 +12,10 @@ spec:
   type: resource
   owner: group:platform-team
   lifecycle: development
+  tag:
+  - azure
+  - resource  
+  - subscription
+  - terraform
+  - iac
+  - cd
