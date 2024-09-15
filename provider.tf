@@ -5,9 +5,13 @@ terraform {
       version = "~> 3.107"
     }
   }
-
-  backend "local" {
-    path = "./terraform.tfstate"
+ 
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "${{ value.organization }}"
+    workspaces {
+      name = ""${{ value.workspace }}""
+    }    
   }
 }
 
@@ -15,11 +19,3 @@ provider "azurerm" {
   features {
   }
 }
-
-# data "terraform_remote_state" "local" {
-#   backend = "local"
-
-#   config = {
-#      path = "./terraform.sub.tfstate"
-#   }
-# }
