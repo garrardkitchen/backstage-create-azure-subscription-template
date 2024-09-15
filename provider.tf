@@ -10,7 +10,7 @@ terraform {
     hostname = "app.terraform.io"
     organization = "${{ value.organization }}"
     workspaces {
-      name = ""${{ value.workspace }}""
+      name = "${{ value.workspace }}"
     }    
   }
 }
