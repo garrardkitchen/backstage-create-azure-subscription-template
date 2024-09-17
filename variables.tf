@@ -15,12 +15,12 @@ variable "subscription_name" {
 
 variable "resource_group_name" {
   type    = string
-  detault = "${{ values.rgName }}"
+  default = "${{ values.rgName }}"
 }
 
 variable "resource_group_location" {
   type    = string
-  detault = "${{ values.rgLocation }}"
+  default = "${{ values.rgLocation }}"
 }
 
 # variable "subscription_tags" {
