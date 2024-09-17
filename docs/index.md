@@ -21,4 +21,4 @@ folder (/docs) or replace the content in this file.
 |:--|:--|:--|
 | ORG_NAME | ${{ values.orgName }} | Used when creating the Workspace in TFC/E |
 | PROJECT_ID | ${{ values.projectId }} | Used when assigned the Workspace to a TFC/E Project |
-| WORKSPACE_NAME | $(( values.workspaceName }} | Used to name your Workspace in TFC/E | 
+| WORKSPACE_NAME | ${{ values.workspaceName }} | Used to name your Workspace in TFC/E | 
