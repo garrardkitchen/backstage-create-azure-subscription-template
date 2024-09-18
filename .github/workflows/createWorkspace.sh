@@ -56,12 +56,8 @@ echo "$workspace_id"
 # Set workspace parameters
 ##########################
 
-# Set your Terraform Cloud API token and workspace ID
-API_TOKEN="your_api_token"
-WORKSPACE_ID="your_workspace_id"
-
 # Define the API endpoint
-api_endpoint="https://app.terraform.io/api/v2/workspaces/${WORKSPACE_ID}/vars"
+api_endpoint="https://app.terraform.io/api/v2/workspaces/${workspace_id}/vars"
 
 set_workspace_variable() {
     local key="$1"
@@ -83,7 +79,7 @@ set_workspace_variable() {
     }')
 
     response=$(curl -s -X POST "$api_endpoint" \
-        -H "Authorization: Bearer $API_TOKEN" \
+        -H "Authorization: Bearer $TFE_TOKEN" \
         -H "Content-Type: application/vnd.api+json" \
         -d "$payload")
 
