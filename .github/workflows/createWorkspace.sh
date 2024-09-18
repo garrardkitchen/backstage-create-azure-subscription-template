@@ -58,6 +58,7 @@ echo "$workspace_id"
 
 # Define the API endpoint
 api_endpoint="https://app.terraform.io/api/v2/workspaces/${workspace_id}/vars"
+echo "$api_endpoint"
 
 set_workspace_variable() {
     local key="$1"
