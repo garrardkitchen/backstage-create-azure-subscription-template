@@ -56,9 +56,36 @@ echo "$workspace_id"
 # Set workspace parameters
 ##########################
 
+
+##########################
+# 1st, get variables
+##########################
+
+
+
 # Define the API endpoint
 api_endpoint="https://app.terraform.io/api/v2/workspaces/${workspace_id}/vars"
 echo "$api_endpoint"
+
+# Function to fetch the list of variables
+fetch_workspace_variables() {
+    local response=$(curl -s -X GET "$api_endpoint" \
+        -H "Authorization: Bearer $API_TOKEN" \
+        -H "Content-Type: application/vnd.api+json")
+    echo "$response"
+}
+
+# Function to check if a variable exists by key
+variable_exists() {
+    local key="$1"
+    local variables_response=$(fetch_workspace_variables)
+    local exists=$(echo "$variables_response" | jq -r --arg key "$key" '.data[] | select(.attributes.key == $key) | .id')
+    if [ -n "$exists" ]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
 
 set_workspace_variable() {
     local key="$1"
@@ -79,11 +106,22 @@ set_workspace_variable() {
         }
     }')
 
-    response=$(curl -s -X POST "$api_endpoint" \
+    if [ "$(variable_exists "$variable_key")" == "true" ]; then
+        echo "Variable '$variable_key' exists, so updating it."
+
+        response=$(curl -s -X PATCH "$api_endpoint/${variable_key}" \
         -H "Authorization: Bearer $TFE_TOKEN" \
         -H "Content-Type: application/vnd.api+json" \
         -d "$payload")
+    else
+        echo "Variable '$variable_key' does not exist, so creating it."
 
+        response=$(curl -s -X POST "$api_endpoint" \
+        -H "Authorization: Bearer $TFE_TOKEN" \
+        -H "Content-Type: application/vnd.api+json" \
+        -d "$payload")
+    fi
+ 
     echo "Setting var: $key, with response: $response"
 }
 
