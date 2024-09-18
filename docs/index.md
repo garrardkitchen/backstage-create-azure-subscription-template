@@ -14,7 +14,7 @@ folder (/docs) or replace the content in this file.
 | Name | System | Purpose |
 |:--|:--|:--|
 |  TF_API_TOKEN | TFC/E | Token to allow GH to perform requires actions. e.g. Create workspaces, to run plan and apply and to interact with the TFC/E HTTP API |
-| ARM_CLIENT_SECRET | Azure | ${{ values.orgName }} | Used by TFC/E for SP secret for authn into Azure to create the resources |
+| ARM_CLIENT_SECRET | Azure | Used by TFC/E for SP secret for authn into Azure to create the resources |
 
 ## GitHub Variables
 
