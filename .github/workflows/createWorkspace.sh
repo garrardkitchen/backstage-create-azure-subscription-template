@@ -104,15 +104,15 @@ set_workspace_variable() {
         }
     }')
 
-    if [ "$(variable_exists "$variable_key")" == "true" ]; then
-        echo "Variable '$variable_key' exists, so updating it."
+    if [ "$(variable_exists "$key")" == "true" ]; then
+        echo "Variable '$key' exists, so updating it."
 
-        response=$(curl -s -X PATCH "$api_endpoint/${variable_key}" \
+        response=$(curl -s -X PATCH "$api_endpoint/${key}" \
         -H "Authorization: Bearer $TFE_TOKEN" \
         -H "Content-Type: application/vnd.api+json" \
         -d "$payload")
     else
-        echo "Variable '$variable_key' does not exist, so creating it."
+        echo "Variable '$key' does not exist, so creating it."
 
         response=$(curl -s -X POST "$api_endpoint" \
         -H "Authorization: Bearer $TFE_TOKEN" \
