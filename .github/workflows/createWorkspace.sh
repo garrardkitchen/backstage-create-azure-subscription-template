@@ -79,7 +79,7 @@ variable_exists() {
     local variables_response=$(fetch_workspace_variables)
     local exists=$(echo "$variables_response" | jq -r --arg key "$key" '.data[] | select(.attributes.key == $key) | .id')
     if [ -n "$exists" ]; then
-        echo "true"
+        echo $exists
     else
         echo "false"
     fi
@@ -89,32 +89,47 @@ set_workspace_variable() {
     local key="$1"
     local value="$2"
     local category="${3:-env}" # env, terraform
-    local sensitive="${4:-false}" # true, false
+    local sensitive="${4:-false}" # true, false   
+    local id=$(variable_exists "$key") # actual id or false
 
-    payload=$(jq -n --arg key "$key" --arg value "$value" --arg category "$category" --argjson sensitive "$sensitive" '{
-        data: {
-            type: "vars",
-            attributes: {
-                key: $key,
-                value: $value,
-                category: $category,
-                hcl: false,
-                sensitive: $sensitive
+    if [ $id == "false" ]; then       
+        echo "Variable '$key' does not exist, so creating it."
+
+        payload=$(jq -n --arg key "$key" --arg value "$value" --arg category "$category" --argjson sensitive "$sensitive" '{
+            data: {
+                type: "vars",
+                attributes: {
+                    key: $key,
+                    value: $value,
+                    category: $category,
+                    hcl: false,
+                    sensitive: $sensitive
+                }
             }
-        }
-    }')
+        }')
 
-    if [ "$(variable_exists "$key")" == "true" ]; then
-        echo "Variable '$key' exists, so updating it."
-
-        response=$(curl -s -X PATCH "$api_endpoint/${key}" \
+        response=$(curl -s -X POST "$api_endpoint" \
         -H "Authorization: Bearer $TFE_TOKEN" \
         -H "Content-Type: application/vnd.api+json" \
         -d "$payload")
     else
-        echo "Variable '$key' does not exist, so creating it."
+        echo "Variable '$key' exists, so updating ($id) it."
 
-        response=$(curl -s -X POST "$api_endpoint" \
+        payload=$(jq -n --arg id "$id" --arg key "$key" --arg value "$value" --arg category "$category" --argjson sensitive "$sensitive" '{
+            data: {
+                id: "$id",
+                type: "vars",
+                attributes: {
+                    key: $key,
+                    value: $value,
+                    category: $category,
+                    hcl: false,
+                    sensitive: $sensitive
+                }
+            }
+        }')
+
+        response=$(curl -s -X PATCH "$api_endpoint/${id}" \
         -H "Authorization: Bearer $TFE_TOKEN" \
         -H "Content-Type: application/vnd.api+json" \
         -d "$payload")
