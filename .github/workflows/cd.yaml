@@ -32,7 +32,11 @@ jobs:
         ORG_NAME: ${{ vars.ORG_NAME }}
         PROJECT_ID: ${{ vars.PROJECT_ID }}
         WORKSPACE_NAME: ${{ vars.WORKSPACE_NAME }}
-        TFE_TOKEN: ${{ secrets.TF_API_TOKEN }}        
+        TFE_TOKEN: ${{ secrets.TF_API_TOKEN }}    
+        ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}    
 
     - name: 'Terraform Init'
       run: terraform init  
