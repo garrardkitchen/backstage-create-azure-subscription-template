@@ -18,6 +18,11 @@ HEADERS=(
   -H "Authorization: Bearer ${TFE_TOKEN}"
   -H "Content-Type: application/vnd.api+json"
 )
+
+##########################
+# Create workspace
+##########################
+
 # Check if the workspace exists
 response=$(curl -s "${WORKSPACES_URL}" "${HEADERS[@]}")
 # echo "$response"
@@ -55,13 +60,6 @@ echo "$workspace_id"
 ##########################
 # Set workspace parameters
 ##########################
-
-
-##########################
-# 1st, get variables
-##########################
-
-
 
 # Define the API endpoint
 api_endpoint="https://app.terraform.io/api/v2/workspaces/${workspace_id}/vars"
