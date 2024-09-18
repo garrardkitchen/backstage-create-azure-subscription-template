@@ -12,14 +12,14 @@ folder (/docs) or replace the content in this file.
 ## GitHub Secrets
 
 | Name | System | Purpose |
-|:--|:--|
+|:--|:--|:--|
 |  TF_API_TOKEN | TFC/E | Token to allow GH to perform requires actions. e.g. Create workspaces, to run plan and apply and to interact with the TFC/E HTTP API |
 | ARM_CLIENT_SECRET | Azure | ${{ values.orgName }} | Used by TFC/E for SP secret for authn into Azure to create the resources |
 
 ## GitHub Variables
 
 | Name | System | Value | Purpose |
-|:--|:--|:--|
+|:--|:--|:--|:--|
 | ORG_NAME | TFC/E | ${{ values.orgName }} | Used when creating the Workspace in TFC/E |
 | PROJECT_ID | TFC/E | ${{ values.projectId }} | Used when assigned the Workspace to a TFC/E Project |
 | WORKSPACE_NAME | TFC/E | ${{ values.workspaceName }} | Used to name your Workspace in TFC/E | 
