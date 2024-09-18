@@ -5,6 +5,10 @@ TFE_TOKEN="${TFE_TOKEN}"
 ORG_NAME="${ORG_NAME}"
 WORKSPACE_NAME="${WORKSPACE_NAME}"
 PROJECT_ID="${PROJECT_ID}"
+ARM_CLIENT_ID="${ARM_CLIENT_ID}"
+ARM_CLIENT_SECRET="${ARM_CLIENT_SECRET}"
+ARM_SUBSCRIPTION_ID="${ARM_SUBSCRIPTION_ID}"
+ARM_TENANT_ID="${ARM_TENANT_ID}"
 
 # Define the API endpoints
 BASE_URL="https://app.terraform.io/api/v2/organizations/${ORG_NAME}"
@@ -47,7 +51,55 @@ fi
 
 echo "$workspace_id"
 
+
+##########################
+# Set workspace parameters
+##########################
+
+# Set your Terraform Cloud API token and workspace ID
+API_TOKEN="your_api_token"
+WORKSPACE_ID="your_workspace_id"
+
+# Define the API endpoint
+api_endpoint="https://app.terraform.io/api/v2/workspaces/${WORKSPACE_ID}/vars"
+
+set_workspace_variable() {
+    local key="$1"
+    local value="$2"
+    local category="${3:-env}" # env, terraform
+    local sensitive="${4:-false}" # true, false
+
+    payload=$(jq -n --arg key "$key" --arg value "$value" --arg category "$category" --argjson sensitive "$sensitive" '{
+        data: {
+            type: "vars",
+            attributes: {
+                key: $key,
+                value: $value,
+                category: $category,
+                hcl: false,
+                sensitive: $sensitive
+            }
+        }
+    }')
+
+    response=$(curl -s -X POST "$api_endpoint" \
+        -H "Authorization: Bearer $API_TOKEN" \
+        -H "Content-Type: application/vnd.api+json" \
+        -d "$payload")
+
+    echo "Setting var: $key, with response: $response"
+}
+
+# Set the workspace variables
+set_workspace_variable "ARM_CLIENT_ID" "$ARM_CLIENT_ID"
+set_workspace_variable "ARM_CLIENT_SECRET" "$ARM_CLIENT_SECRET" "env" true
+set_workspace_variable "ARM_SUBSCRIPTION_ID" "$ARM_SUBSCRIPTION_ID"
+set_workspace_variable "ARM_TENANT_ID" "$ARM_TENANT_ID"
+
+################################
 # Add the workspace to a project
+################################
+
 project_url="${BASE_PROJECT_URL}/projects/${PROJECT_ID}/relationships/workspaces"
 payload=$(jq -n --arg workspace_id "$workspace_id" '{
   data: [
