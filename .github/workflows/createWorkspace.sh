@@ -68,7 +68,7 @@ echo "$api_endpoint"
 # Function to fetch the list of variables
 fetch_workspace_variables() {
     local response=$(curl -s -X GET "$api_endpoint" \
-        -H "Authorization: Bearer $API_TOKEN" \
+        -H "Authorization: Bearer $TFE_TOKEN" \
         -H "Content-Type: application/vnd.api+json")
     echo "$response"
 }
